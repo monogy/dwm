@@ -118,7 +118,7 @@ static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34
 static const char* flameshot[] = { "flameshot", "gui", NULL };
 // static const char *qalculate[] = {"snap", "run", "qalculate"};
 static const char* voltool[] = { "st", "-e", "alsamixer", "m", NULL };
-static const char* openhtop[] = { "st", "-e", "htop", NULL };
+static const char* opentop[] = { "st", "-e", "btop", NULL };
 static const char* openranger[] = { "st", "-e", "ranger", NULL };
 
 
@@ -240,9 +240,9 @@ static Key keys[] = {
   { MODKEY|Mod1Mask,              XK_n,      spawn,          SHCMD("notify-send '正在启动XMind...'; optirun xmind") },
   { MODKEY|Mod1Mask,              XK_x,      spawn,          SHCMD("notify-send '正在启动喜马拉雅...'; /opt/apps/com.xmly.deepin/files/run.sh") },
   { MODKEY|Mod1Mask,              XK_b,      spawn,          SHCMD("notify-send '正在启动百度云盘...'; baidunetdisk") },
-  { MODKEY|Mod1Mask,              XK_c,      spawn,          SHCMD("notify-send '🍀 正在启动微信...'; '/opt/apps/com.qq.weixin.deepin/files/run.sh' -f %f") },
-  { MODKEY|Mod1Mask,              XK_q,      spawn,          SHCMD("notify-send '🐧 正在启动QQ...'; '/opt/apps/com.qq.im.deepin/files/run.sh' -f %f") },
-  { MODKEY|Mod1Mask,              XK_m,      spawn,          SHCMD("notify-send '📮 正在启动邮箱...'; /home/monogy/program/thunderbird/thunderbird") },
+  { MODKEY|Mod1Mask,              XK_c,      spawn,          SHCMD("notify-send '🍀 正在启动微信...'; weixin") },
+  { MODKEY|Mod1Mask,              XK_q,      spawn,          SHCMD("notify-send '🐧 正在启动QQ...'; qq") },
+  { MODKEY|Mod1Mask,              XK_m,      spawn,          SHCMD("notify-send '📮 正在启动邮箱...'; thunderbird") },
   { MODKEY|Mod1Mask,              XK_d,      spawn,          SHCMD("/home/monogy/.dotfiles/scripts/toExcute/fileu-toggle.sh") },
   { MODKEY|Mod1Mask,              XK_t,      spawn,          SHCMD("/home/monogy/project/shell/translate.sh") },
   // { MODKEY|Mod1Mask,              XK_p,      spawn,          SHCMD("notify-send '📜 正在启动福昕阅读器...'; FoxitReader") },
@@ -273,7 +273,7 @@ static Key keys[] = {
   { MODKEY,                       XK_t,      spawn,          SHCMD("/home/monogy/.dotfiles/scripts/toExcute/tray-toggle.sh") },
   { MODKEY|Mod1Mask,              XK_r,      spawn,          { .v = openranger } },
   { MODKEY,                       XK_Print,  spawn,          { .v = flameshot } },
-  { MODKEY,                       XK_Pause,  spawn,          {.v = openhtop } },
+  { MODKEY,                       XK_Pause,  spawn,          {.v = opentop } },
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
   { MODKEY|Mod1Mask,                       XK_0,      spawn,          SHCMD("WriteIniFile '/home/monogy/.dotfiles/.global_data.ini' 'wallpaper' 'num' '0'; WriteIniFile '/home/monogy/.dotfiles/.global_data.ini' 'wallpaper' 'update' 'ON'") },
