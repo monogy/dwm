@@ -220,6 +220,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 	{ MODKEY,                       XK_s,      show,           {0} },
+	{ MODKEY|ShiftMask,             XK_s,      showall,        {0} },
 	{ MODKEY,                       XK_h,      hide,           {0} },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
@@ -269,6 +270,11 @@ static Key keys[] = {
   { 0,            XF86XK_AudioLowerVolume,   spawn,          SHCMD("/usr/bin/amixer -qM set Master 2%- umute; pkill -RTMIN+10 dwmblocks") },
   { 0,            XF86XK_AudioRaiseVolume,   spawn,          SHCMD("/usr/bin/amixer -qM set Master 2%+ umute; pkill -RTMIN+10 dwmblocks") },
   { 0,            XF86XK_ScreenSaver,        spawn,          SHCMD("/home/monogy/.dotfiles/scripts/toExcute/slock_screen.sh") },
+	{ 0,            XF86XK_AudioStop,          spawn,          SHCMD("mpc toggle; pkill -RTMIN+1 dwmblocks") },  //Fn+
+	{ 0,            XF86XK_AudioPrev,          spawn,          SHCMD("mpc prev; pkill -RTMIN+1 dwmblocks") },  //Fn+
+	{ 0,            XF86XK_AudioNext,          spawn,          SHCMD("mpc next; pkill -RTMIN+1 dwmblocks") },  //Fn+
+	{ 0,            XF86XK_AudioPlay,          spawn,          SHCMD("mpc stop; pkill -RTMIN+1 dwmblocks") },  //Fn+
+	// { 0,            XF86XK_AudioPause,         spawn,          SHCMD("mpc stop; pkill -RTMIN+1 dwmblocks") },
   // { 0,            XF86XK_ScreenSaver,        spawn,          SHCMD("slock & xset dpms force off") },
   // { MODKEY|Mod1Mask,              XK_Print,  spawn,          SHCMD("gnome-screenshot") },
   // { MODKEY,                       XK_t,      spawn,          SHCMD("/home/monogy/.dotfiles/scripts/toExcute/tray-toggle.sh") },
@@ -290,15 +296,16 @@ static Key keys[] = {
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
 	/* click                event mask      button          function        argument */
-  // { ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
-  // { ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 	// { ClkWinTitle,          0,              Button1,        togglewin,      {0} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button1,        sigstatusbar,   {.i = 1} },
-	{ ClkStatusText,        0,              Button2,        sigstatusbar,   {.i = 2} },
-	{ ClkStatusText,        0,              Button3,        sigstatusbar,   {.i = 3} },
+	{ ClkStatusText,        0,              Button1,        sigstatusbar,   {.i = 1} }, //鼠标左键
+	{ ClkStatusText,        0,              Button2,        sigstatusbar,   {.i = 2} }, //鼠标中键
+	{ ClkStatusText,        0,              Button3,        sigstatusbar,   {.i = 3} }, //鼠标右键
+	{ ClkStatusText,        0,              Button4,        sigstatusbar,   {.i = 4} }, //鼠标滑轮上滚
+	{ ClkStatusText,        0,              Button5,        sigstatusbar,   {.i = 5} }, //鼠标滑轮下滚
+	{ ClkStatusText,        ShiftMask,      Button1,        sigstatusbar,   {.i = 6} }, //Shift+鼠标左键
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
