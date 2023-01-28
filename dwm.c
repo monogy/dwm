@@ -306,7 +306,7 @@ static int statussig;
 static pid_t statuspid = -1;
 static int screen;
 static int sw, sh;           /* X display screen geometry width, height */
-static int bh;               /* bar height */
+static int bh, blw = 0;               /* bar height */
 static int lrpad;            /* sum of left and right padding for text */
 static int (*xerrorxlib)(Display *, XErrorEvent *);
 static unsigned int numlockmask = 0;
@@ -513,7 +513,7 @@ buttonpress(XEvent *e)
 	}
 	if (ev->window == selmon->barwin) {
 
-			int blw;
+    /* int blw; */
 		i = x = 0;
 		unsigned int occ = 0;
 		for(c = m->clients; c; c=c->next)
@@ -527,7 +527,7 @@ buttonpress(XEvent *e)
 		if (i < LENGTH(tags)) {
 			click = ClkTagBar;
 			arg.ui = 1 << i;
-		} else if (ev->x < x + TEXTW(selmon->ltsymbol))
+		} else if (ev->x < x + blw + TEXTW(selmon->ltsymbol))
 			click = ClkLtSymbol;
 		/* 2px right padding */
 		/* else if (ev->x > selmon->ww - TEXTW(stext) + lrpad - 2) */
@@ -929,7 +929,7 @@ drawbar(Monitor *m)
 				/* drw_text(drw, m->ww - statusw + x, 0, tw, bh, 0, text, 0); */
         tw = TEXTW(text) - lrpad; /* 2px extra right padding */
         /* drw_text(drw, m->ww - statusw + x - stw, 0, tw, bh, lrpad / 2 + 2, text, 0); */
-        drw_text(drw, m->ww - statusw + x - stw, 0, tw, bh, 0, text, 0);
+        drw_text(drw, m->ww - statusw + x - stw, 0, tw, bh, 0, text, 0); //modify
 				x += tw;
 				*s = ch;
 				text = s + 1;
@@ -939,8 +939,8 @@ drawbar(Monitor *m)
 		/* drw_text(drw, m->ww - statusw + x, 0, tw, bh, 0, text, 0); */
 
 		/* drw_text(drw, m->ww - tw - stw, 0, tw, bh, lrpad / 2 + 2, text, 0); */
-		tw = TEXTW(text) - lrpad + 2; /* 2px extra right padding */
-		drw_text(drw, m->ww -statusw +x -stw, 0, tw, bh, 0, text, 0);
+		tw = TEXTW(text) - lrpad + 2; /* 2px extra right padding */      //modify
+		drw_text(drw, m->ww -statusw +x -stw, 0, tw, bh, 0, text, 0);    //modify
 
 		tw = statusw;
 	}
@@ -966,7 +966,7 @@ drawbar(Monitor *m)
 
 		x += w;
 	}
-	w = TEXTW(m->ltsymbol);
+	w = blw = TEXTW(m->ltsymbol);
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
 
@@ -2267,14 +2267,14 @@ sigstatusbar(const Arg *arg)
 
 	if (!statussig)
 		return;
-  /* sv.sival_int = arg->i; */
-  sv.sival_int = (statussig << 8 ) | arg->i; //modify
+  sv.sival_int = arg->i;
+  /* sv.sival_int = (statussig << 8 ) | arg->i; //modify */
 	if ((statuspid = getstatusbarpid()) <= 0)
 		return;
 
-  sigqueue(statuspid, SIGUSR1, sv);  //modify
+  /* sigqueue(statuspid, SIGUSR1, sv);  //modify */
 
-  /* sigqueue(statuspid, SIGRTMIN+statussig, sv); */
+  sigqueue(statuspid, SIGRTMIN+statussig, sv);
 }
 
 int
@@ -2320,44 +2320,6 @@ tagmon(const Arg *arg)
 		return;
 	sendmon(selmon->sel, dirtomon(arg->i));
 }
-
-/* void */
-/* tile(Monitor *m) */
-/* { */
-	/* unsigned int i, n, h, mw, my, ty; */
-	/* float mfacts = 0, sfacts = 0; */
-	/* Client *c; */
-
-	/* for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++) { */
-		/* if (n < m->nmaster) */
-			/* mfacts += c->cfact; */
-		/* else */
-			/* sfacts += c->cfact; */
-	/* } */
-	/* if (n == 0) */
-		/* return; */
-
-	/* if (n > m->nmaster) */
-		/* mw = m->nmaster ? m->ww * m->mfact : 0; */
-	/* else */
-		/* mw = m->ww; */
-	/* for (i = my = ty = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) */
-		/* if (i < m->nmaster) { */
-			/* [> h = (m->wh - my) / (MIN(n, m->nmaster) - i); <] */
-			/* h = (m->wh - my) * (c->cfact / mfacts); */
-			/* resize(c, m->wx, m->wy + my, mw - (2*c->bw), h - (2*c->bw), 0); */
-			/* if (my + HEIGHT(c) < m->wh) */
-				/* my += HEIGHT(c); */
-			/* mfacts -= c->cfact; */
-		/* } else { */
-			/* [> h = (m->wh - ty) / (n - i); <] */
-			/* h = (m->wh - ty) * (c->cfact / sfacts); */
-			/* resize(c, m->wx + mw, m->wy + ty, m->ww - mw - (2*c->bw), h - (2*c->bw), 0); */
-			/* if (ty + HEIGHT(c) < m->wh) */
-				/* ty += HEIGHT(c); */
-			/* sfacts -= c->cfact; */
-		/* } */
-/* } */
 
 void
 togglebar(const Arg *arg)
